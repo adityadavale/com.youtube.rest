@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
 
 import org.codehaus.jettison.json.JSONArray;
 
@@ -42,7 +42,8 @@ public class V1_status {
 	@GET
 	@Path("/search")
 	@Produces(MediaType.TEXT_HTML)
-	public String returnSearchResults(){
+	public Response returnSearchResults(){
+		Response rb = null;
 		Connection con = null;
 		con = MySqlConnection.getDBConnection();
 		String resultString = null;
@@ -55,10 +56,11 @@ public class V1_status {
 			
 			json = converter.toJSONArray(rs);
 			resultString = json.toString();	
+			rb = Response.ok(resultString).build();
 			
 		} catch (Exception e) {
 		}
-		return resultString;
+		return rb;
 	}
 	
 }
